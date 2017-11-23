@@ -18,7 +18,7 @@ $FRAMAURL = "https://framadate.org/bj92OEFnmo5VrN3R"; //pour les ressources
 $FRAMAURL = "#"; //pour les ressources
 
 $PERIOD_NAME = "mois de decembre";
-$csv_file = "csv/decembre.csv";
+$csv_file = "csv/decembre_test.csv";
 $csv_file_ressources = "csv/ressources.csv";
 $to_email = "creneaux@lelefan.org";
 
@@ -171,9 +171,9 @@ class Volunteer {
 
     public function __construct($firstname,$lastname,$email)
     {
-        $this->_firstname = $firstname;
-        $this->_lastname = $lastname;
-        $this->_email = trim($email);
+        $this->_firstname = strtolower($firstname);
+        $this->_lastname = strtolower($lastname);
+        $this->_email = strtolower(trim($email));
     }
 
     public function getFirstname(){
@@ -229,7 +229,7 @@ function getScheduledHours($booked,$email){
                 foreach ($SHIFTS[$j] as $index => $shift) {
                     for ($i = 0; $i < $NB_MAX_OF_VOLUNTEER[$j]; $i++) {
                         list($line_index ,$column_index) = getIndexes($j,$index,$index_j);
-                        if (($booked[$line_index + $i ][$column_index + 2 ]) == $email) {
+                        if ((strtolower($booked[$line_index + $i ][$column_index + 2 ])) == strtolower($email)) {
                             $_SESSION['scheduled_hours'][$email] += $SHIFTS_VALUES[$i][$index];
                         }
                     }
@@ -266,7 +266,7 @@ function addVolunteer(&$booked,$job_type,$index,$index_j,$volunteer){
         if (!filter_var($booked[$line_index+$i][$column_index+2], FILTER_VALIDATE_EMAIL)) { //email is not valid == room is available
             $booked[$line_index+$i][$column_index+0] = $volunteer->getFirstname();
             $booked[$line_index+$i][$column_index+1] = $volunteer->getLastname();
-            $booked[$line_index+$i][$column_index+2] = $volunteer->getEmail();
+            $booked[$line_index+$i][$column_index+2] = strtolower($volunteer->getEmail());
             $_SESSION['scheduled_hours'][$volunteer->getEmail()] += $SHIFTS_VALUES[$job_type][$index];
             return true;
         }elseif ($booked[$line_index+$i][$column_index+2] == $volunteer->getEmail()){ //oups already subscribe here
@@ -283,7 +283,7 @@ function removeVolunteer(&$booked,$job_type,$index,$index_j,$email){
     list($line_index ,$column_index) = getIndexes($job_type,$index,$index_j);
 
     for($i=0;$i<$NB_MAX_OF_VOLUNTEER[$job_type]&&!$returnValue;$i++){
-        $current_email = $booked[$line_index][$column_index+2];
+        $current_email = $booked[$line_index+$i][$column_index+2];
         if ((filter_var($current_email, FILTER_VALIDATE_EMAIL)) //room is not empty and emails matche
         && (strtolower($email) == strtolower($current_email))){
             $booked[$line_index][$column_index+0] = '';
@@ -338,7 +338,7 @@ if ($_POST && isset($_POST["remove"]) && $_POST["remove"]) {
                     //success, redirect same file
                     $_SESSION['messages']['success'][] =  "Merci, la suppression a bien été prise en compte. <br/>Tu peux choisir un autre créneau. <br/>A bientôt dans ton épicerie";
                 }else{
-                    $_SESSION['messages']['error'][] = "Oups, l'opération a mal tournée...";
+                    $_SESSION['messages']['error'][] = "Oups, l'opération a mal tourné...";
                 }
             }else{
                 $_SESSION['messages']['error'][] = "<i class=\"large material-icons\">warning</i> Tu es bénévole ressource ! Merci d'envoyer un mail à creneaux@lelefan.org pour te désincrire.</a> :)";
@@ -566,7 +566,7 @@ $booked = readCSV($csv_file);
                     <label for="email" data-error="Mauvais format" data-success="">Ton courriel</label>
                 </div>
             </div>
-            <button type="submit" class="btn ok show-on-small">Je m'inscris</button>
+            <button type="submit" class="btn ok hide show-on-small">Je m'inscris</button>
 			<input type="hidden" name="creneau" />
 			<input type="hidden" name="jour" />
 			<input type="hidden" name="job_type" />
