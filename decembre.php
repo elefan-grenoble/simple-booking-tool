@@ -18,7 +18,7 @@ $FRAMAURL = "https://framadate.org/bj92OEFnmo5VrN3R"; //pour les ressources
 $FRAMAURL = "#"; //pour les ressources
 
 $PERIOD_NAME = "mois de decembre";
-$csv_file = "csv/decembre_test.csv";
+$csv_file = "csv/decembre.csv";
 $csv_file_ressources = "csv/ressources.csv";
 $to_email = "creneaux@lelefan.org";
 
