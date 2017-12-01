@@ -100,13 +100,24 @@ $BLOCKED[0][9][1] = true;
 $BLOCKED[1] = array();
 $BLOCKED[1][0] = array();
 $BLOCKED[1][0][0] = true;
+$BLOCKED[1][0][1] = true;
+$BLOCKED[1][0][2] = true;
+$BLOCKED[1][0][3] = true;
 $BLOCKED[1][3] = array();
 $BLOCKED[1][3][0] = true;
+$BLOCKED[1][3][1] = true;
+$BLOCKED[1][3][2] = true;
+$BLOCKED[1][3][3] = true;
 $BLOCKED[1][6] = array();
 $BLOCKED[1][6][0] = true;
+$BLOCKED[1][6][1] = true;
+$BLOCKED[1][6][2] = true;
+$BLOCKED[1][6][3] = true;
 $BLOCKED[1][9] = array();
 $BLOCKED[1][9][0] = true;
-
+$BLOCKED[1][9][1] = true;
+$BLOCKED[1][9][2] = true;
+$BLOCKED[1][9][3] = true;
 //colors / nb of booking
 $COLORS = array();
 $COLORS[0] = array();
@@ -286,9 +297,9 @@ function removeVolunteer(&$booked,$job_type,$index,$index_j,$email){
         $current_email = $booked[$line_index+$i][$column_index+2];
         if ((filter_var($current_email, FILTER_VALIDATE_EMAIL)) //room is not empty and emails matche
         && (strtolower($email) == strtolower($current_email))){
-            $booked[$line_index][$column_index+0] = '';
-            $booked[$line_index][$column_index+1] = '';
-            $booked[$line_index][$column_index+2] = '';
+            $booked[$line_index+$i][$column_index+0] = '';
+            $booked[$line_index+$i][$column_index+1] = '';
+            $booked[$line_index+$i][$column_index+2] = '';
             $returnValue = true; //exit
         }
     }
@@ -468,7 +479,7 @@ $booked = readCSV($csv_file);
                     <div class="input-field col s12">
                         <select id="job_type">
                             <option value="" disabled selected>Choisir un poste</option>
-                            <?php for($i=0;$i<$NB_OF_JOB_TYPE;$i++): ?>
+                            <?php for($i=$NB_OF_JOB_TYPE-1;$i>=0;$i--): ?>
                                 <option value="job<?php echo $i ?>"><?php echo $JOB_TYPES[$i]; ?></option>
                             <?php endfor; ?>
                         </select>
@@ -504,7 +515,7 @@ $booked = readCSV($csv_file);
                                             if (isset($BLOCKED[$job][$index_j])&&isset($BLOCKED[$job][$index_j][$index])) { ?>
                                                 <td class="creneau blocked"
                                                     style="border-left:2px solid <?php echo $BORDER_COLOR[$index_j%count($BORDER_COLOR)] ?>;background: lightgray;text-align: center;color: gray;">
-                                                    Epicerie fermée
+                                                    Créneau fermé
                                                 </td>
                                             <?php } else {
                                                 $nb = countVolunteers($booked,$job,$index,$index_j);
@@ -663,7 +674,8 @@ $booked = readCSV($csv_file);
                 var max_nb_of_volunteer = <?php echo json_encode($NB_OF_BOOKABLE_ROOM); ?>;
 
     			$(".job").on("click","tbody td.creneau:not(.blocked)",function(){
-    				if ((parseInt($(this).attr("data-nb"))+parseInt($(this).attr("data-nb-r")))<max_nb_of_volunteer[$(this).attr("data-job")]){
+    				// if ((parseInt($(this).attr("data-nb"))+parseInt($(this).attr("data-nb-r")))<max_nb_of_volunteer[$(this).attr("data-job")]){
+    				if (parseInt($(this).attr("data-nb"))<max_nb_of_volunteer[$(this).attr("data-job")]){
     					$("#inscription").find(".title").html($(this).attr("data-fr"));
     					$("#inscription").find("input[name=ok]").val($(this).attr("data-fr"));
 	    				$("#inscription").find("input[name=creneau]").val($(this).attr("data-lig"));
@@ -685,7 +697,7 @@ $booked = readCSV($csv_file);
                     $("#remove").modal('open');
                 });
                 $(".job").on("click","tbody td.creneau.blocked",function(){
-                    Materialize.toast('L&rsquo;épicerie est fermée le jeudi matin :)', 3000, 'rounded');
+                    Materialize.toast('Ce créneau est fermé :)', 3000, 'rounded');
                 });
     		});
     	</script>
