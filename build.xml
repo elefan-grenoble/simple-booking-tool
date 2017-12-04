@@ -1,0 +1,26 @@
+<project name="SimpleBooking" default="dist" basedir=".">
+    <description>
+        L'élèfan Simple Booking tool
+    </description>
+    <!-- set global properties for this build -->
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="dist" location="dist"/>
+
+
+    <target name="phpstan" description="PHP Static Analysis Tool - discover bugs in your code without running it">
+        <mkdir dir="${basedir}/build"/>
+        <get src="https://github.com/phpstan/phpstan/releases/download/0.7/phpstan-0.7.phar"
+             dest="${basedir}/build/phpstan.phar" skipexisting="true"/>
+        <exec executable="php" searchpath="true" resolveexecutable="true">
+            <arg value="${basedir}/build/phpstan.phar"/>
+            <arg value="analyse"/>
+            <arg value="-l"/>
+            <arg value="5"/>
+            <arg value="${basedir}/"/>
+            <arg value="--no-interaction"/>
+            <arg value="--no-progress"/>
+        </exec>
+    </target>
+
+</project>
