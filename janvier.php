@@ -261,7 +261,7 @@ function getScheduledHours($booked,$email){
                     for ($i = 0; $i < $NB_MAX_OF_VOLUNTEER[$j]; $i++) {
                         list($line_index ,$column_index) = getIndexes($j,$index,$index_j);
                         if ((strtolower($booked[$line_index + $i ][$column_index + 2 ])) == strtolower($email)) {
-                            $_SESSION['scheduled_hours'][$email] += $SHIFTS_VALUES[$i][$index];
+                            $_SESSION['scheduled_hours'][$email] += $SHIFTS_VALUES[$j][$index];
                         }
                     }
                 }
