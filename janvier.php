@@ -14,8 +14,8 @@ $NB_MAX_OF_WORKED_HOURS = 3;
 $NB_OF_VOLUNTEER_FIELDS = 3;
 $HAS_HEADER = true;
 $HAS_LABEL = true;
-$FRAMAURL = "https://framadate.org/bj92OEFnmo5VrN3R"; //pour les ressources
-$FRAMAURL = "#"; //pour les ressources
+$FRAMAURL = "https://framadate.org/WEav6oUGRwKoL7I7​"; //pour les ressources
+//$FRAMAURL = "#"; //pour les ressources
 
 $PERIOD_NAME = "mois de janvier 2017";
 $csv_file = "csv/janvier.csv";
